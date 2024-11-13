@@ -24,3 +24,4 @@ six==1.16.0
 snowballstemmer==2.2.0
 sqlparse==0.5.1
 tomli==2.0.2
+django-environ==0.11.2

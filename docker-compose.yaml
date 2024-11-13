@@ -2,27 +2,37 @@ version: '3.8'
 
 services:
   web:
-    build: 
+    build:
       context: ./blogicum
       dockerfile: Dockerfile
+    environment:
+      USER: ${name}
+      PASSWORD: ${password}
+      DB: ${db}
+      HOST: ${HOST}
+      PORT: ${PORT}
+      KEY: ${SECRET_KEY}
     ports:
       - "8000:8000"
+    command: sh -c "gunicorn --bind 0.0.0.0:8000 blogicum.wsgi"
     depends_on:
       - db
   
   db:
     image: postgres:latest
     environment:
-      - POSTGRES_USER: devops_practice
-      - POSTGRES_PASSWORD: 123
-      - POSTGRES_DB: devops_practice
+      POSTGRES_USER: ${name}
+      POSTGRES_PASSWORD: ${password}
+      POSTGRES_DB: ${db}
     volumes:
       - db_data:/var/lib/postgresql/data
-
+    ports:
+      - "5432:5432"
+  
+      
 volumes:
   db_data:
 
 networks:
   default:
     driver: bridge
-    
